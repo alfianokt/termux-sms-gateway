@@ -57,7 +57,7 @@
           }
           const body = Sqrl.render(this.body, data)
           console.log(this.number, body)
-          fetch(`/?number=${this.number}&body=${body}`, {
+          fetch(`/?number=${this.number}&body=${encodeURIComponent(body)}`, {
             method: 'POST',
           })
           .then(res => res.json())
