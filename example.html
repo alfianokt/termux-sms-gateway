@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+
+  <title>App Example</title>
+</head>
+<body>
+  <div class="container" x-data="app()" x-init="$watch('selected', v => body = templates[v])">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card mt-3">
+          <div class="card-header">
+            App Example
+          </div>
+          <div class="card-body">
+            <select class="form-select form-select mb-3" x-model="selected">
+              <option value="0" selected>Example Template (default emty)</option>
+              <option value="1">Verification</option>
+            </select>
+            <form @submit.prevent="submit($event)">
+              <div class="mb-3">
+                <label for="i-number" class="form-label">Number Target</label>
+                <input type="number" class="form-control" id="i-number" x-model="number">
+              </div>
+              <div class="mb-3">
+                <label for="i-body" class="form-label">Body</label>
+                <textarea class="form-control" id="i-body" x-model="body"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/squirrelly"></script>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer></script>
+  <script>
+    const app = ()=>{
+      return {
+        number: '',
+        body: '',
+        selected: 0,
+        templates: [
+          '',
+          'Kode verifikasi anda adalah {{ it.code }}.'
+        ],
+        submit() {
+          const data = {
+            code: Math.floor(Math.random()*9999) // generate random code
+          }
+          const body = Sqrl.render(this.body, data)
+          console.log(this.number, body)
+          fetch(`/?number=${this.number}&body=${body}`, {
+            method: 'POST',
+          })
+          .then(res => res.json())
+          .then(json => alert(json.status ? 'Success' : 'Failed'))
+        }
+      }
+    }
+  </script>
+</body>
+</html>
