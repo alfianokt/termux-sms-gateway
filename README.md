@@ -11,7 +11,7 @@ termux-sms-gateway is is sms gateway using android apps (termux)
 
 ## Demo
 
-soon..
+https://www.youtube.com/watch?v=4FgeGhQQRk4
 
 ## Donate
 
